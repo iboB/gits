@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.expand_path("../lib", __dir__) # For use/testing when no gem is installed
+require "gits"
+
+puts "gits v#{Gits::VERSION} #{Gits::VERSION_TYPE}"
+puts "This is a placeholder. Nothing is implemented yet"
