@@ -1,0 +1,7 @@
+gits:
+  - id: foo
+    git: https://github.com/someuser/foo.git
+    commit: 3ffc1b233fe40f3b810f579625677f372d34ac50
+  - id: bar
+    git: https://github.com/other/bar.git
+    tag: v2.23.11
