@@ -1,10 +1,10 @@
 # gits
 
-<!-- [![Gem Version](https://badge.fury.io/rb/gits.svg)](https://badge.fury.io/rb/gits) -->
+[![Gem Version](https://badge.fury.io/rb/gits.svg)](https://badge.fury.io/rb/gits)
 
 A dev-oriented project-local package manager. An alternative to git submodules.
 
-*Gits is still an experimental phase of development. Features and usage will change dramatically with no regard for backwards compatibility.*
+*Gits is still in an experimental phase of development. Features and usage will change dramatically with no regard for backwards compatibility.*
 
 ## Contributing
 
