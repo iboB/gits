@@ -3,5 +3,5 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__) # For use/testing when no gem is installed
 require "gits"
 
-cli = Gits::CLI.new
-exit cli.run(ARGV.dup)
+runner = Gits::CLI::Runner.new
+exit runner.run(ARGV.dup)
