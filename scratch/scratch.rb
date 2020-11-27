@@ -15,4 +15,4 @@
 
 require_relative '../lib/gits/package_version'
 
-p Gits::PackageVersion.from_tag('v1.02.3rc2')
+p Gits::PackageVersion.from_tag('v1.02.32rc2')
