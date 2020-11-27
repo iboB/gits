@@ -12,7 +12,7 @@ Perhaps gits is not what you're looking for in terms of features. In that case y
 
 * [fips](https://github.com/floooh/fips) - git-based, multi-platform build system and package manager for C and C++ projects. Works with any git repos
 * [gpm](https://github.com/aerys/gpm) - a platform-agnostic git-based package manager. Works with .tar.gz files in git lfs repos
-* [git-pack](https://github.com/dominiksalvet/gitpack) - a bash-only git-based package manager. Works with any git repos
+* [gitpack](https://github.com/dominiksalvet/gitpack) - a bash-only git-based package manager. Works with any git repos
 
 ## Contributing
 
