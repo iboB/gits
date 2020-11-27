@@ -53,3 +53,5 @@ Each dep has a type, a category, and a source
     * Future: perhaps think of using commit ancenstry to do something about it?
         * if commit A is an ancestor of commit B, assume B is a later version of the same repo. If there are no ancestors, assume versions are incompatible
 * install command: run something after fetch
+* Allow cli runner to be reused for other tools (allow external config of tool name, yml files and dir)
+
