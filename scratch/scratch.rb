@@ -5,6 +5,14 @@
 
 # p data
 
-require 'git'
+# require 'git'
 
-p Git.ls_remote('https://github.com/iboB/dynamix.git')
+# tags = Git.ls_remote('https://github.com/iboB/dynamix.git')['tags'].keys.filter { |k|
+#   k !~ /\{\}$/
+# }
+
+# p tags
+
+require_relative '../lib/gits/package_version'
+
+p Gits::PackageVersion.from_tag('v1.02.3rc2')
