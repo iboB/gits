@@ -4,7 +4,7 @@
 
 "dep" is a dependency.
 
-Each dep has a type and a group
+Each dep has a type, a category, and a source
 
 ### Types of deps
 
@@ -15,10 +15,14 @@ Each dep has a type and a group
     * always deep clone
     * won't look inside cloned dir
 
-### Groups of deps
+### Categories
 
-* **project**: manually requested by the user in gits.yml
-* **dev**: manually requested but dev-only. Only cloned if gits.yml is root. dev deps of a dep are not deps of ours
+* **own**: needed by the package
+* **dev**: dev-only. Only cloned if gits.yml is root. dev deps of a dep are not deps of ours
+
+### Source
+
+* **root**: manually requested by the user
 * **indirect**: deps of a manually requested ones (or deps of deps of deps... etc)
 
 ## Commands
@@ -26,14 +30,14 @@ Each dep has a type and a group
 * `gits list`
     * show installed deps
 * `gits remove name`
-    * Remove from project deps and all indirect orphans. You can't remove from indirect deps.
+    * Remove from root deps and all indirect orphans. You can't remove from indirect deps.
 * `gits fetch`
     * if there is no gits.lock.yml, fetch based on gits.yml (fresh clone)
     * if there is gits.lock.yml, use it to save traffic (gits.yml updated)
 * `gits update dep-name`
     * same args as add, including
     * `--rev=` - update to specific revision for package, or specific sha, or tag, or branch (HEAD) for repos
-    * `--all` - instead of dep name, update all project deps
+    * `--all` - instead of dep name, update all root deps
     * basically do the same as add
 * `gits repair`
     * fetch ignoring gits.lock.yml and gits/ dir (same as `$ rm -rf gits.yml.lock gits/ && gits install` )
@@ -42,7 +46,7 @@ Each dep has a type and a group
 
 ## Questions and TODOs
 
-* flavors? - current flavors are project and dev. support more? (for example depending on os or target)
+* flavors? - current flavors are own and dev. support more? (for example depending on os or target)
 
 * repo compatiblity
     * always error on different hashes

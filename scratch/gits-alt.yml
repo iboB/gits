@@ -1,0 +1,7 @@
+deps:
+  - package: https://github.com/someuser/foo.git
+    version: ~> 1.2.0
+  - repo: https://github.com/other/bar.git
+  - package: git@github.com:alice/testlib.git
+    version: ~> 3.0.0
+
