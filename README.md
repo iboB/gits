@@ -6,6 +6,14 @@ A dev-oriented project-local package manager. An alternative to git submodules.
 
 *Gits is still in an experimental phase of development. Features and usage will change dramatically with no regard for backwards compatibility.*
 
+## Not what you're looking for?
+
+Perhaps gits is not what you're looking for in terms of features. In that case you can [open a feature request](https://github.com/iboB/gits/issues/new) or check out these similar alternative tools:
+
+* [fips](https://github.com/floooh/fips) - git-based, multi-platform build system and package manager for C and C++ projects. Works with any git repos
+* [gpm](https://github.com/aerys/gpm) - a platform-agnostic git-based package manager. Works with .tar.gz files in git lfs repos
+* [git-pack](https://github.com/dominiksalvet/gitpack) - a bash-only git-based package manager. Works with any git repos
+
 ## Contributing
 
 Issues, suggestions, and pull requests are welcome.
