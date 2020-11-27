@@ -2,29 +2,50 @@
 
 ## Glossary
 
-* *project repos* - ones manually added by the user
-    * *repos* - explicit deps of this project
-    * *dev repos* - repos which are only added if project is root
-* *dep repos* - repos requested indirectly by project deps
+"dep" is a dependency.
+
+Each dep has a type and a group
+
+### Types of deps
+
+* **package**: a git repo which has tags which match a version: `[v]<integers separated by dots>` (say "1.31", "v1.3.2", "v0")
+    * always shallow clone
+    * will look for gits.yml for deps in cloned dir
+* **repo**: a git repo which doesn't have this (or one that has but has ben coerced to this manually)
+    * always deep clone
+    * won't look inside cloned dir
+
+### Groups of deps
+
+* **project**: manually requested by the user in gits.yml
+* **dev**: manually requested but dev-only. Only cloned if gits.yml is root. dev deps of a dep are not deps of ours
+* **indirect**: deps of a manually requested ones (or deps of deps of deps... etc)
 
 ## Commands
 
-* `gits add repo-link`
-    * `--name=` - give specific id (otherwise it's inferred from the repo)
-    * `--branch=`, `--tag=` - clone specific branch
-    * `--commit=sha` - clone specific commit
-    * `--shallow` - set "always shallow" for this repo specifically
-    * Add new project repo
+* `gits list`
+    * show installed deps
 * `gits remove name`
-    * Remove from project repos and all indirect orphans. You can't remove from dep repos.
-* `gits update`
-    * `--shallow` - perform a shallow update
-    * update based on gits.yml
-* `gits
+    * Remove from project deps and all indirect orphans. You can't remove from indirect deps.
+* `gits fetch`
+    * if there is no gits.lock.yml, fetch based on gits.yml (fresh clone)
+    * if there is gits.lock.yml, use it to save traffic (gits.yml updated)
+* `gits update dep-name`
+    * same args as add, including
+    * `--rev=` - update to specific revision for package, or specific sha, or tag, or branch (HEAD) for repos
+    * `--all` - instead of dep name, update all project deps
+    * basically do the same as add
+* `gits repair`
+    * fetch ignoring gits.lock.yml and gits/ dir (same as `$ rm -rf gits.yml.lock gits/ && gits install` )
+* `gits infer`
+    * build gits.yml and gits.lock.yml based on gits dir
 
 ## Questions and TODOs
 
-* deps?
-* flavors?
-* depth, recursion?
-*
+* flavors? - current flavors are project and dev. support more? (for example depending on os or target)
+
+* repo compatiblity
+    * always error on different hashes
+    * Future: perhaps think of using commit ancenstry to do something about it?
+        * if commit A is an ancestor of commit B, assume B is a later version of the same repo. If there are no ancestors, assume versions are incompatible
+* install command: run something after fetch
