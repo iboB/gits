@@ -66,4 +66,27 @@ class TestPackageVersion < Test::Unit::TestCase
     assert_compare PV['1.2.3'], '>', PV['1.1']
     assert_compare PV['1.2.3b'], '>', PV['1.2.3']
   end
+
+  def pc(a, b); a.pessimistic_compare(b); end
+  def test_pessimistic_compare
+    assert pc(PV['1.2.3'], PV['1.2.3'])
+    assert pc(PV['1.2.4'], PV['1.2.3'])
+    assert pc(PV['1.2.3'], PV['1.2'])
+    assert pc(PV['1.3.3'], PV['1.2'])
+    assert pc(PV['1.2.3'], PV['1'])
+    assert pc(PV['2.2.3'], PV['1'])
+    assert pc(PV['1.3'], PV['1.2'])
+
+    assert !pc(PV['1.2.3'], PV['1.2.3.0'])
+    assert !pc(PV['1.2.3'], PV['1.2.4'])
+    assert !pc(PV['1.3.0'], PV['1.2.2'])
+    assert !pc(PV['2.0.0'], PV['1.2'])
+    assert !pc(PV['1.1.3'], PV['1.2'])
+
+    assert pc(PV['1.2.3a'], PV['1.2.3a'])
+    assert pc(PV['1.2.3a'], PV['1.2.3'])
+    assert !pc(PV['1.2.3a'], PV['1.2.4'])
+    assert !pc(PV['1.2.3a'], PV['1.2.3b'])
+    assert pc(PV['1.2.3b'], PV['1.2.3a'])
+  end
 end

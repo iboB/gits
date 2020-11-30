@@ -46,5 +46,20 @@ module Gits
 
       @suffix <=> other.suffix
     end
+
+    # self ~> other
+    def pessimistic_compare(other)
+      return false if @ar.length < other.ar.length # compare with longer query? too pessimistic. always false
+
+      cmp = @ar.zip(other.ar).drop_while { |a, b| a == b } # drop equal elements from fromt
+      cmp.select! { |a, b| b } # drop elements with b nil (since other may be shorter)
+      return @suffix >= other.suffix if cmp.empty? # compare suffixes if everything else is equal
+      return false if !other.suffix.empty? # pessimisting if other has suffix
+      return false if cmp.length > 1 # pessimistic, only last is relevant
+
+      # compare last elements
+      a, b = cmp[0]
+      a >= b
+    end
   end
 end
