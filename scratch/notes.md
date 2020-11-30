@@ -55,3 +55,10 @@ Each dep has a type, a category, and a source
 * install command: run something after fetch
 * Allow cli runner to be reused for other tools (allow external config of tool name, yml files and dir)
 
+### Fetch
+
+Describe fetch behavior with gits.yml, gits.lock.yml
+
+Use gits.local.yml to describe local state?
+
+
