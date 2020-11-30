@@ -33,5 +33,18 @@ module Gits
     def to_s
       @ar.join('.') + @suffix
     end
+
+    include Comparable
+    def <=>(other)
+      @ar.zip(other.ar).each do |a, b|
+        return 1 if b == nil
+        r = (a <=> b)
+        return r if r.nonzero?
+      end
+
+      return -1 if other.ar.length > @ar.length
+
+      @suffix <=> other.suffix
+    end
   end
 end

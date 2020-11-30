@@ -39,4 +39,31 @@ class TestPackageVersion < Test::Unit::TestCase
     assert_equal '1.2.3', vft('1.2.3').to_s
     assert_equal '5.20.3rc2', vft('v5.20.03rc2').to_s
   end
+
+  def test_compare
+    assert_equal PV['1.2.3'], PV['1.2.3']
+    assert_equal PV['1.2.3a'], PV['1.2.3a']
+
+    assert_compare PV['1.2.3'], '<=', PV['1.2.3']
+    assert_compare PV['1.2.3a'], '>=', PV['1.2.3a']
+
+    assert_compare PV['2'], '<', PV['4']
+    assert_compare PV['3'], '>', PV['1']
+
+    assert_compare PV['1.2'], '<', PV['1.4']
+    assert_compare PV['1.3'], '>', PV['1.1']
+
+    assert_compare PV['1.2.3'], '<', PV['1.2.4']
+    assert_compare PV['1.2.4'], '>', PV['1.2.3']
+
+    assert_compare PV['1.2.3a'], '<', PV['1.2.3b']
+    assert_compare PV['1.2.4rc3'], '>', PV['1.2.4rc2']
+
+    assert_compare PV['1.2.3'], '<', PV['1.2.3a']
+    assert_compare PV['1.2'], '<', PV['1.2.0']
+    assert_compare PV['1'], '<', PV['1.2.0']
+    assert_compare PV['1.2.3'], '>', PV['1']
+    assert_compare PV['1.2.3'], '>', PV['1.1']
+    assert_compare PV['1.2.3b'], '>', PV['1.2.3']
+  end
 end
