@@ -1,7 +1,16 @@
-# require 'yaml'
+$LOAD_PATH.unshift File.expand_path("../lib", __dir__) # For use/testing when no gem is installed
+require 'gits'
 
 # src = File.read 'gits.yml'
-# data = YAML.load(src)
+
+src = <<~YAML
+deps:
+  - https://github.com/someuser/foo.git
+  - https://github.com/other/bar.git
+  - git@github.com:alice/testlib.git
+YAML
+
+p Gits::Util::parse_spec(src)
 
 # p data
 
@@ -12,7 +21,3 @@
 # }
 
 # p tags
-
-require_relative '../lib/gits/package_version'
-
-p Gits::PackageVersion.from_tag('v1.02.32rc2')

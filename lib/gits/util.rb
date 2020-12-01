@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Gits
   module Util
     extend self
