@@ -61,5 +61,69 @@ module Gits
       a, b = cmp[0]
       a >= b
     end
+
+    class MatchRule
+      Sym2Op = {eq: '=', gt: '>', lt: '<', gte: '>=', lte: '<=', pc: '~>' }
+      Op2Sym = Sym2Op.map { |k, v| [v, k] }.to_h
+
+      def initialize(op_str, ver_str)
+        @ver = PackageVer[ver_str]
+        @op = Op2Sym[op_str]
+      end
+
+      attr :op, :ver
+
+      def self.from_string(str)
+        elems = str.split(' ')
+        return nil if elems.length != 2
+
+        ret = MatchRule.new(*elems)
+        ret.op && ret.ver && ret
+      end
+
+      def to_s
+        "#{Sym2Op[@op]} #{ver}"
+      end
+
+      def match?(version)
+        send(@op, version)
+      end
+
+      def eq(v); return v == @ver; end
+      def gt(v); return v > @ver; end
+      def lt(v); return v < @ver; end
+      def gte(v); return v >= @ver; end
+      def lte(v); return v <= @ver; end
+      def pc(v); return v.pessimistic_compare(@ver); end
+    end
+
+    class MatchRules
+      def initialize
+        @rules = []
+      end
+
+      attr :rules
+
+      def self.from_string(str)
+        ret = MatchRules.new
+        str.split(',').each do |rule_str|
+          rule = MatchRule.from_string rule_str
+          return nil if !rule
+          ret.rules << rule
+        end
+        ret
+      end
+
+      def to_s
+        @rules.join(', ')
+      end
+
+      def match?(version)
+        @rules.reduce(true) do |res, rule|
+          break false if !rule.match? version
+          true
+        end
+      end
+    end
   end
 end
