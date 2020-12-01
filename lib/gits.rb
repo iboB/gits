@@ -4,6 +4,7 @@ module Gits
   autoload :VERSION, "gits/version"
   autoload :Error, "gits/error"
   autoload :PackageVer, "gits/package_ver"
+  autoload :DepSpec, "gits/dep_spec"
 
   autoload :Util, "gits/util"
 

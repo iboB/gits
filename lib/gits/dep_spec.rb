@@ -1,6 +1,6 @@
 module Gits
   class DepSpec
-    attr_accessor :name, :url, :type
+    attr :name, :url, :type, :ver_rules
 
     def initialize(val)
       if val.class == String
@@ -18,9 +18,9 @@ module Gits
     end
 
     def init_from_url(url)
-      @name = DepSpec.name_from_url str
-      raise "cannot infer spec name from #{str}" if !@name
-      @url = str
+      @name = DepSpec.name_from_url url
+      raise Error.new "cannot infer spec name from '#{url}'" if !@name
+      @url = url
     end
 
     def init_from_string(str)
@@ -34,11 +34,16 @@ module Gits
       if package_url
         init_from_url package_url
         @type = :package
+
+        ver = hash[:version]
+        return if !ver
+        @ver_rules = PackageVer::MatchRulePack.from_string(ver)
+        raise Error.new "bad version rules '#{ver}' for package '#{@name}'" if !@ver_rules
       elsif repo_url
         init_from_url repo_url
         @type = :repo
       else
-        raise "missing 'package' or 'repo' identifier for #{hash}"
+        raise Error.new "missing 'package' or 'repo' identifier for '#{hash}'"
       end
     end
   end
