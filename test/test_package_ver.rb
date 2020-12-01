@@ -1,8 +1,6 @@
 require_relative '../lib/gits/package_ver.rb'
 require 'test/unit'
 
-
-
 class TestPackageVer < Test::Unit::TestCase
   PV = Gits::PackageVer
 
@@ -158,13 +156,13 @@ class TestPackageVer < Test::Unit::TestCase
   end
 
   def test_match_rules
-    PV::MatchRules.from_string('').tap do |mr|
+    PV::MatchRulePack.from_string('').tap do |mr|
       assert_empty mr.rules
       assert mr.match? PV['0.0.1']
       assert mr.match? PV['5.5']
     end
 
-    PV::MatchRules.from_string('~> 1.2.3').tap do |mr|
+    PV::MatchRulePack.from_string('~> 1.2.3').tap do |mr|
       assert_equal 1, mr.rules.length
       assert_equal :pc, mr.rules.first.op
       assert_equal PV['1.2.3'], mr.rules.first.ver
@@ -175,7 +173,7 @@ class TestPackageVer < Test::Unit::TestCase
       refute mr.match? PV['1.2.2']
     end
 
-    PV::MatchRules.from_string('>= 1.2.3, < 2').tap do |mr|
+    PV::MatchRulePack.from_string('>= 1.2.3, < 2').tap do |mr|
       assert_equal 2, mr.rules.length
       assert_equal :gte, mr.rules.first.op
       assert_equal PV['1.2.3'], mr.rules.first.ver
@@ -189,8 +187,8 @@ class TestPackageVer < Test::Unit::TestCase
       refute mr.match? PV['2.0.0']
     end
 
-    assert_nil PV::MatchRule.from_string('> xxx')
-    assert_nil PV::MatchRule.from_string('<> 1.2.4')
-    assert_nil PV::MatchRules.from_string('>= 1.2.3 < 2')
+    assert_nil PV::MatchRulePack.from_string('> xxx')
+    assert_nil PV::MatchRulePack.from_string('<> 1.2.4')
+    assert_nil PV::MatchRulePack.from_string('>= 1.2.3 < 2')
   end
 end

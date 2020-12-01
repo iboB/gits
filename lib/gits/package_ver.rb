@@ -97,7 +97,7 @@ module Gits
       def pc(v); return v.pessimistic_compare(@ver); end
     end
 
-    class MatchRules
+    class MatchRulePack
       def initialize
         @rules = []
       end
@@ -105,7 +105,7 @@ module Gits
       attr :rules
 
       def self.from_string(str)
-        ret = MatchRules.new
+        ret = MatchRulePack.new
         str.split(',').each do |rule_str|
           rule = MatchRule.from_string rule_str
           return nil if !rule
