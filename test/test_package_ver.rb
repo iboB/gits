@@ -1,10 +1,10 @@
-require_relative '../lib/gits/package_version.rb'
+require_relative '../lib/gits/package_ver.rb'
 require 'test/unit'
 
 
 
-class TestPackageVersion < Test::Unit::TestCase
-  PV = Gits::PackageVersion
+class TestPackageVer < Test::Unit::TestCase
+  PV = Gits::PackageVer
 
   def test_basic
     v = PV.new [1, 2, 3], 'xxx'

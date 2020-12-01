@@ -1,5 +1,5 @@
 module Gits
-  class PackageVersion
+  class PackageVer
     def initialize(ar, suffix = '')
       @ar = ar
       @suffix = suffix
@@ -21,13 +21,13 @@ module Gits
         return nil if v !~ /^\d+$/
         v.to_i
       }
-      PackageVersion.new(ar, suffix)
+      PackageVer.new(ar, suffix)
     end
 
     def self.from_tag(tag)
       return nil if tag.empty?
       tag = tag[1..-1] if tag[0] == 'v'
-      PackageVersion[tag]
+      PackageVer[tag]
     end
 
     def to_s
