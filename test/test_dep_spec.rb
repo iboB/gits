@@ -81,9 +81,11 @@ class TestDepSpec < Test::Unit::TestCase
         - https://github.com/someuser/foo.git
         - https://github.com/other/bar.git
         - git@github.com:alice/testlib.git
+      dev-deps:
+        - zzz.git
     YAML
     hash = YAML.load src
-    DS.specs_from_hash(hash, :root).tap do |specs|
+    DS.specs_from_hash(hash, :noroot).tap do |specs|
       assert_equal 3, specs.length
       assert_equal 'https://github.com/someuser/foo.git', specs['foo'].url
       specs.each do |k, s|
@@ -99,6 +101,7 @@ class TestDepSpec < Test::Unit::TestCase
         - repo: https://github.com/other/bar.git
         - package: git@github.com:alice/testlib.git
           version: ~> 3.0.0
+      dev-deps:
         - package: baz.git
     YAML
     hash = YAML.load src

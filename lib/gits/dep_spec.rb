@@ -28,6 +28,12 @@ module Gits
       raise Error.new "deps must be an array" if deps.class != Array
       aspecs = deps.map { |val| DepSpec.new val }
 
+      if context == :root
+        devdeps = hash['dev-deps']
+        raise Error.new "dev-deps must be an array" if devdeps.class != Array
+        aspecs += devdeps.map { |val| DepSpec.new val }
+      end
+
       # convert array to hash but check for duplicates
       hspecs = {}
       aspecs.each do |dep|
