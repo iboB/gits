@@ -33,6 +33,9 @@ module Gits
     end
 
     def init_from_hash(hash)
+      # symbolize keys
+      hash.transform_keys!(&:to_sym)
+
       # package or repo?
       package_url = hash[:package]
       repo_url = hash[:repo]

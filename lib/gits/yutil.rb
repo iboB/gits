@@ -9,7 +9,6 @@ module Gits
       deps = h['deps']
       raise Error.new "deps must be an array" if deps.class != Array
       deps.map do |val|
-        val.transform_keys!(&:to_sym) if val.class == Hash
         DepSpec.new val
       end
     end
