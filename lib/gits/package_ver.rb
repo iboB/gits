@@ -1,4 +1,9 @@
 module Gits
+  # The version of a package
+  # Suports comparisons including the ruby pessimistic compare (~>)
+  # A version is numbers separated by dots + an optional string at the end
+  # 1.2.3, 1.2.3.4.5.3, 1.2.3a
+  # This is a standalone class with no deps which can be safely removed from the gem
   class PackageVer
     def initialize(ar, suffix = '')
       @ar = ar
@@ -7,26 +12,28 @@ module Gits
 
     attr_reader :ar, :suffix
 
+    # construct from string
     def self.[](str)
       return nil if str.empty?
       return nil if str[0].to_i.to_s != str[0] # must start with number
 
       ar = str.split('.')
-      return nil if ar[-1] !~ /^(\d+)(.*)/
+      return nil if ar[-1] !~ /^(\d+)(.*)/ # match optional string suffix
 
       ar[-1] = $1
       suffix = $2
 
       ar.map! { |v|
-        return nil if v !~ /^\d+$/
+        return nil if v !~ /^\d+$/ # error if not a number
         v.to_i
       }
       PackageVer.new(ar, suffix)
     end
 
+    # construct from git repo tag (same as from string but 'v' is allowed as an optional prefix)
     def self.from_tag(tag)
       return nil if tag.empty?
-      tag = tag[1..-1] if tag[0] == 'v'
+      tag = tag[1..-1] if tag[0] == 'v' # escape 'v' if any
       PackageVer[tag]
     end
 
@@ -36,6 +43,7 @@ module Gits
 
     include Comparable
     def <=>(other)
+      # allow partial compares
       @ar.zip(other.ar).each do |a, b|
         return 1 if b == nil
         r = (a <=> b)
@@ -44,6 +52,7 @@ module Gits
 
       return -1 if other.ar.length > @ar.length
 
+      # check suffix if everything else is equal
       @suffix <=> other.suffix
     end
 
@@ -62,6 +71,8 @@ module Gits
       a >= b
     end
 
+    # A match rule contains a rule for a version to match
+    # It's a comparsion with another (potentially partial) version
     class MatchRule
       Sym2Op = {eq: '=', gt: '>', lt: '<', gte: '>=', lte: '<=', pc: '~>' }
       Op2Sym = Sym2Op.map { |k, v| [v, k] }.to_h
@@ -73,6 +84,8 @@ module Gits
 
       attr :op, :ver
 
+      # '<op> <ver>'
+      # '< 1.1.2', '~> 1.2.3', '= 1.2.3'
       def self.from_string(str)
         elems = str.split(' ')
         return nil if elems.length != 2
@@ -97,6 +110,7 @@ module Gits
       def pc(v); return v.pessimistic_compare(@ver); end
     end
 
+    # A collection of match rules
     class MatchRulePack
       def initialize
         @rules = []
@@ -104,6 +118,7 @@ module Gits
 
       attr :rules
 
+      # rules separated by comma
       def self.from_string(str)
         ret = MatchRulePack.new
         str.split(',').each do |rule_str|
@@ -118,6 +133,7 @@ module Gits
         @rules.join(', ')
       end
 
+      # match if the vesion matches all underlying rules
       def match?(version)
         @rules.reduce(true) do |res, rule|
           break false if !rule.match? version
