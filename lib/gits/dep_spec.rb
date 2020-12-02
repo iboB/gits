@@ -45,7 +45,9 @@ module Gits
 
         # optionally look for a version match rule pack
         ver = hash[:version]
-        return if !ver
+        return if !ver || ver.empty?
+        # allow v prefix, as it makes yaml more readable
+        ver = ver[1..-1] if ver[0] == 'v' # escape 'v' if any
         @ver_rules = PackageVer::MatchRulePack.from_string(ver)
         raise Error.new "bad version rules '#{ver}' for package '#{@name}'" if !@ver_rules
       elsif repo_url

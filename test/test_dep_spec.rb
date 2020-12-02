@@ -53,7 +53,7 @@ class TestDepSpec < Test::Unit::TestCase
       assert_equal 2, ds.ver_rules.rules.length
     end
 
-    DS.new('package' => 'foo.git', 'version' => '> 1.2, < 2').tap do |ds|
+    DS.new('package' => 'foo.git', 'version' => 'v > 1.2, < 2').tap do |ds|
       assert_equal 'foo', ds.name
       assert_equal 'foo.git', ds.url
       assert_equal :package, ds.type
