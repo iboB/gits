@@ -4,17 +4,12 @@ module Gits
   module YUtil
     extend self
 
-    def parse_specs(yml)
-      h = YAML.load(yml)
-      deps = h['deps']
-      raise Error.new "deps must be an array" if deps.class != Array
-      deps.map do |val|
-        DepSpec.new val
-      end
+    def parse(yml)
+      yield YAML.load yml
     end
 
-    def parse_specs_file(fname)
-      parse_specs File.read fname
+    def parse_file(fname)
+      parse_specs(File.read fname) { |hash| yield hash }
     end
   end
 end

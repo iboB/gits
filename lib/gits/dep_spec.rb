@@ -21,6 +21,23 @@ module Gits
       $1
     end
 
+    # parse hash obtained from yaml (or... json, or... else?)
+    # context is either :root or :noroot (to be expanded)
+    def self.specs_from_hash(hash, context)
+      deps = hash['deps']
+      raise Error.new "deps must be an array" if deps.class != Array
+      aspecs = deps.map { |val| DepSpec.new val }
+
+      # convert array to hash but check for duplicates
+      hspecs = {}
+      aspecs.each do |dep|
+        raise Error.new "duplicate dep '#{dep.name}'" if hspecs[dep.name]
+        hspecs[dep.name] = dep
+      end
+
+      hspecs
+    end
+
     def init_from_url(url)
       @name = DepSpec.name_from_url url
       raise Error.new "cannot infer spec name from '#{url}'" if !@name

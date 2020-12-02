@@ -1,4 +1,5 @@
 require_relative '../lib/gits'
+require 'yaml'
 require 'test/unit'
 
 class TestDepSpec < Test::Unit::TestCase
@@ -71,6 +72,47 @@ class TestDepSpec < Test::Unit::TestCase
     end
     assert_raise(Gits::Error.new "missing 'package' or 'repo' identifier for '{}'") do
       DS.new({})
+    end
+  end
+
+  def test_specs_from_hash
+    src = <<~YAML
+      deps:
+        - https://github.com/someuser/foo.git
+        - https://github.com/other/bar.git
+        - git@github.com:alice/testlib.git
+    YAML
+    hash = YAML.load src
+    DS.specs_from_hash(hash, :root).tap do |specs|
+      assert_equal 3, specs.length
+      assert_equal 'https://github.com/someuser/foo.git', specs['foo'].url
+      specs.each do |k, s|
+        assert_equal :unknown, s.type
+      end
+    end
+
+    src = <<~YAML
+      deps:
+        - /home/bb/zzz/.git
+        - package: https://github.com/someuser/foo.git
+          version: v > 1.2.0, < 2
+        - repo: https://github.com/other/bar.git
+        - package: git@github.com:alice/testlib.git
+          version: ~> 3.0.0
+        - package: baz.git
+    YAML
+    hash = YAML.load src
+    DS.specs_from_hash(hash, :root).tap do  |specs|
+      assert_equal 5, specs.length
+      assert_equal '/home/bb/zzz/.git', specs['zzz'].url
+      assert_equal :unknown, specs['zzz'].type
+      assert_equal :package, specs['foo'].type
+      assert_not_nil specs['foo'].ver_rules
+      assert_equal :repo, specs['bar'].type
+      assert_equal :package, specs['testlib'].type
+      assert_not_nil specs['testlib'].ver_rules
+      assert_equal :package, specs['baz'].type
+      assert_nil specs['baz'].ver_rules
     end
   end
 end
