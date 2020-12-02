@@ -1,7 +1,7 @@
 require 'yaml'
 
 module Gits
-  module Util
+  module YUtil
     extend self
   end
 end

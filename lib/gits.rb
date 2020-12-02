@@ -6,7 +6,7 @@ module Gits
   autoload :PackageVer, "gits/package_ver"
   autoload :DepSpec, "gits/dep_spec"
 
-  autoload :Util, "gits/util"
+  autoload :YUtil, "gits/yutil"
 
   module CLI
     autoload :Runner, "gits/cli/runner"
