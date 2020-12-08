@@ -29,8 +29,6 @@ Each dep has a type, a category, and a source
 
 * `gits list`
     * show installed deps
-* `gits remove name`
-    * Remove from root deps and all indirect orphans. You can't remove from indirect deps.
 * `gits fetch`
     * if there is no gits.lock.yml, fetch based on gits.yml (fresh clone)
     * if there is gits.lock.yml, use it to save traffic (gits.yml updated)
@@ -40,7 +38,7 @@ Each dep has a type, a category, and a source
     * `--all` - instead of dep name, update all root deps
     * basically do the same as add
 * `gits repair`
-    * fetch ignoring gits.lock.yml and gits/ dir (same as `$ rm -rf gits.yml.lock gits/ && gits install` )
+    * fetch ignoring gits.lock.yml and gits/ dir (same as `$ rm -rf gits.yml.lock gits/ && gits fetch` )
 * `gits infer`
     * build gits.yml and gits.lock.yml based on gits dir
 
