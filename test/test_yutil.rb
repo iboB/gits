@@ -1,9 +1,8 @@
 require_relative '../lib/gits'
 require 'test/unit'
 
-include Gits
-
 class TestYUtil < Test::Unit::TestCase
+  YUtil = Gits::YUtil
   def test_parse
     src = <<~YAML
       deps:
