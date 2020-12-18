@@ -16,6 +16,9 @@ module Gits
         when '--version'
           puts_version
           true
+        when 'tatus'
+          puts "Not my job, but OK. I'll do it\n:(\n\n"
+          exec 'git status'
         else
           false
         end
