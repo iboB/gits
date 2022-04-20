@@ -10,6 +10,7 @@ module Gits
         usage: gits [--version] [--help] <command> [<args>]
       EOF
 
+      # arguments which, if present, abort the run
       def check_exit_args(argv)
         raise Error.new USAGE if argv.empty?
         case argv[0]
